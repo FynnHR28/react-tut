@@ -23,6 +23,16 @@ const Content = () => {
       // `` ${} for string literals in js, f strings in py
       console.log(`${name} clicked`);
   }
+
+  const handleCheck = (id) => {
+    const listItems = items.map((item) => item.id === id ? { ...item,
+       checked: !item.checked} : item);
+    setItems(listItems)
+  }
+  const handleDelete = (id) => {
+    const listItems = items.filter((item) => item.id !== id);
+    setItems(listItems);
+  }
  
   
   return (
@@ -32,18 +42,31 @@ const Content = () => {
       <button onClick={changeName}>Change the display name</button>
       {/* with params funcs you need an anonymous one or this will be called immediately */}
       <button onClick={() => handleClick2(name)}>clickTest2</button>
-      <ul>
+      {items.length ? (
+        <ul>
         {items.map((item) => (
           <li className='item' key={item.id}>
-            <input type="checkbox" checked={item.checked}/>
+            <input 
+            type="checkbox" 
+            onChange={() => (
+              handleCheck(item.id)
+            )}
+            checked={item.checked}/>
             <label>{item.item}</label>
             {/* like adding a component! */}
             <FaTrashAlt 
+            onClick={() => handleDelete(item.id)}
             role='button' 
             tabIndex="0"/>
           </li>
         ))}
       </ul>
+
+      ) : (
+
+        <p>List is empty</p>
+      )}
+      
     </main>
   )
 }
