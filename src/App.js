@@ -4,28 +4,35 @@ import Content from './Content.js';
 import Header from './Header.js';
 import Footer from './Footer.js';
 import AddItem from './AddItem.js';
-import { useState } from 'react';
+import Search from './Search.js';
+import { useState, useEffect } from 'react';
+
 
 // in order to have sibling components share
 // state, we lift state up to parent component!
 
 function App() {
-  const [items, setItems] = useState([{id:1,item:"apple", checked:false}]);
+  // STATES
+  const [items, setItems] = useState(JSON.parse(localStorage.getItem('shoppinglist')) || []);
   const [newItem, setNewItem] = useState('');
+  const [search, setSearch] = useState('');
 
-  const setAndSaveItems = (newItems) => {
-    setItems(newItems)
-    localStorage.setItem('shoppinglist', JSON.stringify(newItems))
-  }
+  // useEffect hook
+  // passing items to list triggers useEffect whenever change is 
+  // made to items
+  useEffect(() => {
+    localStorage.setItem('shoppinglist', JSON.stringify(items))
+  }, [items])
+  
 
   const handleCheck = (id) => {
     const listItems = items.map((item) => item.id === id ? { ...item,
        checked: !item.checked} : item);
-    setAndSaveItems(listItems)
+    setItems(listItems)
   }
   const handleDelete = (id) => {
     const listItems = items.filter((item) => item.id !== id);
-    setAndSaveItems(listItems)
+    setItems(listItems)
   }
 
   const addItem = (item) => {
@@ -36,7 +43,7 @@ function App() {
       item: item
     }
     const listItems = [...items, addedItem]
-    setAndSaveItems(listItems) 
+    setItems(listItems) 
   }
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -52,9 +59,17 @@ function App() {
         setNewItem={setNewItem}
         handleSubmit={handleSubmit}
       />
+      <Search
+        search={search}
+        setSearch={setSearch}
+      />
       <Content 
         // Prop drilling
-        items={items} 
+        items={
+          search ? items.filter((item) => 
+            item.item.toLowerCase().includes(search.toLowerCase())
+        ): items
+        } 
         handleCheck={handleCheck}
         handleDelete={handleDelete}
       />
