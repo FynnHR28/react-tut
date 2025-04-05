@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { FaTrashAlt } from 'react-icons/fa';
 
 // {} destructures the prop object and extracts title directly
-const Content = ({title}) => {
+const Content = () => {
   const [name, setName] = useState('Fynn')
   const [items, setItems] = useState([
     { id: 1, item: 'Apples', checked: false },
@@ -38,7 +38,7 @@ const Content = ({title}) => {
   
   return (
     <main>
-      <h1>{title}</h1>
+     
       {/* name refers to the name state defined up top */}
       <p>Hello {name}</p>
       <button onClick={changeName}>Change the display name</button>
