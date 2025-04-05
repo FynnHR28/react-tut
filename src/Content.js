@@ -2,6 +2,7 @@ import './Content.css';
 // these are svg icons 
 import ItemList from './ItemList.js';
 
+
 // {} destructures the prop object and extracts title directly
 const Content = ({items, handleCheck, handleDelete}) => {
   

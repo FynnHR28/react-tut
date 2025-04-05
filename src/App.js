@@ -2,6 +2,7 @@
 import './App.css';
 import Content from './Content.js';
 import Header from './Header.js';
+import Footer from './Footer.js';
 import { useState } from 'react';
 
 // in order to have sibling components share
@@ -31,6 +32,7 @@ function App() {
         handleCheck={handleCheck}
         handleDelete={handleDelete}
       />
+      <Footer length = {items.length}/>
     </div>
   );
 }
